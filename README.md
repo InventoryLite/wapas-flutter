@@ -1,6 +1,6 @@
 # wapas
 
-A new Flutter plugin project.
+WaPaS Flutter plugin project.
 
 ## Getting Started
 
