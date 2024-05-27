@@ -1,7 +1,7 @@
 name: wapas
-description: "A new Flutter plugin project."
+description: "This package will be used for quick and easy integration with WaPaS in your app."
 version: 0.0.1
-homepage:
+homepage: "https://wapas.inventorylite.com"
 
 environment:
   sdk: '>=3.3.1 <4.0.0'
