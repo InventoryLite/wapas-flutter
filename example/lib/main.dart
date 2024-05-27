@@ -5,14 +5,16 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:wapas/models/achievement_list_model.dart';
 import 'package:wapas/models/achievement_model.dart';
 import 'package:wapas/models/config_model.dart';
+import 'package:wapas/models/user_achievement_list_model.dart';
 import 'package:wapas/wapas.dart';
+import 'package:wapas_example/add_partner_screen.dart';
 
-const applicationId = "72d60757-152e-4d86-9d07-373c3d3a2634";
-const clientId = "MLM2@72d60757-152e-4d86-9d07-373c3d3a2634.wab";
-const clientSecret = "87716c1f-24c3-4633-93d6-ca8796e2c761";
+// TODO : Add your crdentials
+const applicationId = "";
+const clientId = "";
+const clientSecret = "";
 const version = "";
 
 void main() {
@@ -29,6 +31,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
   final _wapasPlugin = Wapas();
+  final navigatorKey = GlobalKey<NavigatorState>();
 
   AchievementModel? _achievement;
   late ConfettiController _confettiController;
@@ -76,11 +79,11 @@ class _MyAppState extends State<MyApp> {
         clientId: clientId,
         clientSecret: clientSecret,
         version: version);
-    AchievementList? achievementsList;
+    UserAchievementListModel? achievementsList;
     try {
-      await _wapasPlugin.init(config); // initialize the library
+      await _wapasPlugin.init(config!); // initialize the library
       achievementsList = await _wapasPlugin.getUnacknowledgedAchievements(
-        "1b930cae-010c-489a-91aa-b57717ec50b0",
+        "662f7997704a55d1820cd8ee",
       ); // get all achievements
     } on PlatformException {
       // Log exception and report studio@gameolive.com
@@ -88,9 +91,13 @@ class _MyAppState extends State<MyApp> {
 
     if (achievementsList!.rows != null) {
       if (achievementsList!.rows!.isNotEmpty) {
-        setState(() {
-          _achievement = achievementsList!.rows![0];
-        });
+        if (achievementsList!.rows![0].achievement != null) {
+          setState(() {
+            _achievement = achievementsList!.rows![0].achievement;
+          });
+
+          showAchievement(navigatorKey.currentContext!);
+        }
       }
     }
   }
@@ -101,16 +108,42 @@ class _MyAppState extends State<MyApp> {
       context: context,
       builder: (BuildContext context) => Align(
         alignment: Alignment.center,
-        child: Container(
-          width: 240,
-          height: 300,
-          padding: EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: Colors.white,
-          ),
-          child: Column(
-            children: [Text(_achievement!.title.toString())],
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Center(
+            child: Container(
+              width: 240,
+              height: 300,
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white,
+              ),
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        navigatorKey.currentState!.pop();
+                        _confettiController.stop();
+                      },
+                      child: Icon(Icons.close),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    _achievement!.title.toString(),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -145,9 +178,36 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Plugin example app'),
+        ),
+        drawer: Drawer(
+          child: ListView(
+            // Important: Remove any padding from the ListView.
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+                child: Text('Plugin example app'),
+              ),
+              ListTile(
+                title: const Text('Add Partner'),
+                onTap: () {
+                  navigatorKey.currentState!.push(
+                    MaterialPageRoute(
+                      builder: (context) => AddPartnerScreen(
+                        wapasPlugin: _wapasPlugin,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
         body: _achievement != null
             ? Stack(

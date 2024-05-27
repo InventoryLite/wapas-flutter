@@ -4,6 +4,7 @@ import 'package:wapas/constants.dart';
 import 'package:wapas/models/achievement_list_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:wapas/models/config_model.dart';
+import 'package:wapas/models/user_achievement_list_model.dart';
 
 Future<AchievementList> fetchAvailableAchievements(
     int limit, int offset, Config config) async {
@@ -42,7 +43,7 @@ Future<AchievementList> fetchAvailableAchievements(
   }
 }
 
-Future<AchievementList> fetchUnacknowledgedAchievements(
+Future<UserAchievementListModel> fetchUnacknowledgedAchievements(
     String userId, Config config) async {
   String path =
       '${constants.API_HOST}/tenant/${config.applicationId}/user-achievements/get-unacknowledged/$userId';
@@ -67,7 +68,8 @@ Future<AchievementList> fetchUnacknowledgedAchievements(
     var achievementResponse = jsonDecode(rb) as Map<String, dynamic>;
 
     // iterate over the list and map each object in list to Img by calling Img.fromJson
-    AchievementList achievementList = AchievementList.fromJson(
+    UserAchievementListModel achievementList =
+        UserAchievementListModel.fromJson(
       achievementResponse,
     );
 

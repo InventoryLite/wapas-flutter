@@ -8,6 +8,7 @@ import 'package:wapas/models/transaction_model.dart';
 import 'package:wapas/models/transaction_profile_model.dart';
 import 'package:wapas/models/transaction_report_list_model.dart';
 import 'package:wapas/models/transactions_list_model.dart';
+import 'package:wapas/models/user_achievement_list_model.dart';
 
 import 'wapas_method_channel.dart';
 
@@ -47,7 +48,7 @@ abstract class WapasPlatform extends PlatformInterface {
         'getAvailableAchievements() has not been implemented.');
   }
 
-  Future<AchievementList> getUnacknowledgedAchievements(String userId,
+  Future<UserAchievementListModel> getUnacknowledgedAchievements(String userId,
       [Config? config]) async {
     throw UnimplementedError(
         'getUnacknowledgedAchievements() has not been implemented.');
@@ -106,5 +107,11 @@ abstract class WapasPlatform extends PlatformInterface {
       [String? filter, Config? config]) async {
     throw UnimplementedError(
         'getTransactionsReport() has not been implemented.');
+  }
+
+  //partner
+  Future<bool> savePartner(Map<String, dynamic> payload,
+      [Config? config]) async {
+    throw UnimplementedError('savePartner() has not been implemented.');
   }
 }

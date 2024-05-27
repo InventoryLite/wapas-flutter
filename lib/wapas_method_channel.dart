@@ -8,9 +8,11 @@ import 'package:wapas/models/transaction_model.dart';
 import 'package:wapas/models/transaction_profile_model.dart';
 import 'package:wapas/models/transaction_report_list_model.dart';
 import 'package:wapas/models/transactions_list_model.dart';
+import 'package:wapas/models/user_achievement_list_model.dart';
 import 'package:wapas/services/achievement_service.dart';
 import 'package:wapas/services/autocomplete_service.dart';
 import 'package:wapas/services/balance_service.dart';
+import 'package:wapas/services/partner_service.dart';
 import 'package:wapas/services/report_service.dart';
 import 'package:wapas/services/transaction_service.dart';
 import 'models/config_model.dart';
@@ -54,7 +56,7 @@ class MethodChannelWapas extends WapasPlatform {
   }
 
   @override
-  Future<AchievementList> getUnacknowledgedAchievements(String userId,
+  Future<UserAchievementListModel> getUnacknowledgedAchievements(String userId,
       [Config? config]) async {
     config ??= CONFIG!;
 
@@ -131,5 +133,13 @@ class MethodChannelWapas extends WapasPlatform {
     config ??= CONFIG!;
     return fetchTransactionsReport(
         filter, startDate, endDate, suspense, limit, config);
+  }
+
+  //partner
+  @override
+  Future<bool> savePartner(Map<String, dynamic> payload,
+      [Config? config]) async {
+    config ??= CONFIG!;
+    return createPartner(payload, config);
   }
 }

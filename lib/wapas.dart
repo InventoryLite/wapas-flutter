@@ -7,6 +7,7 @@ import 'package:wapas/models/transaction_model.dart';
 import 'package:wapas/models/transaction_profile_model.dart';
 import 'package:wapas/models/transaction_report_list_model.dart';
 import 'package:wapas/models/transactions_list_model.dart';
+import 'package:wapas/models/user_achievement_list_model.dart';
 
 import 'wapas_platform_interface.dart';
 
@@ -26,7 +27,7 @@ class Wapas {
         .getAvailableAchievements(limit, offset, config);
   }
 
-  Future<AchievementList> getUnacknowledgedAchievements(String userId,
+  Future<UserAchievementListModel> getUnacknowledgedAchievements(String userId,
       [Config? config]) async {
     return WapasPlatform.instance.getUnacknowledgedAchievements(userId, config);
   }
@@ -87,5 +88,11 @@ class Wapas {
       [String? filter, Config? config]) async {
     return WapasPlatform.instance.getTransactionsReport(
         startDate, endDate, suspense, limit, filter, config);
+  }
+
+  //partner
+  Future<bool> savePartner(Map<String, dynamic> payload,
+      [Config? config]) async {
+    return WapasPlatform.instance.savePartner(payload, config);
   }
 }
