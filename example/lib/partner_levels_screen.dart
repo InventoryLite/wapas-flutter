@@ -56,47 +56,60 @@ class _PartnerLevelsScreenState extends State<PartnerLevelsScreen> {
         padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            DropdownButton(
-              // Initial Value
-              value: forLevel,
-              // Down Arrow Icon
-              icon: const Icon(Icons.keyboard_arrow_down),
-              // Array list of items
-              items: [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7,
-                8,
-                9,
-                10,
-                11,
-                12,
-                13,
-                14,
-                15,
-                16,
-                17,
-                18,
-                19,
-                20
-              ].map((int items) {
-                return DropdownMenuItem(
-                  value: items,
-                  child: Text(items.toString()),
-                );
-              }).toList(),
-              // After selecting the desired option,it will
-              // change button value to selected value
-              onChanged: (int? newValue) {
-                setState(() {
-                  forLevel = newValue!;
-                });
-                fetch();
-              },
+            Text(
+              'Partner Id : $userId',
+              style: TextStyle(fontSize: 18),
+            ),
+            Row(
+              children: [
+                Text(
+                  'Level ',
+                  style: TextStyle(fontSize: 18),
+                ),
+                Spacer(),
+                DropdownButton(
+                  // Initial Value
+                  value: forLevel,
+                  // Down Arrow Icon
+                  icon: const Icon(Icons.keyboard_arrow_down),
+                  // Array list of items
+                  items: [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14,
+                    15,
+                    16,
+                    17,
+                    18,
+                    19,
+                    20
+                  ].map((int items) {
+                    return DropdownMenuItem(
+                      value: items,
+                      child: Text(items.toString()),
+                    );
+                  }).toList(),
+                  // After selecting the desired option,it will
+                  // change button value to selected value
+                  onChanged: (int? newValue) {
+                    setState(() {
+                      forLevel = newValue!;
+                    });
+                    fetch();
+                  },
+                ),
+              ],
             ),
             SizedBox(height: 10),
             partners != null
@@ -134,7 +147,18 @@ class _PartnerLevelsScreenState extends State<PartnerLevelsScreen> {
                                   DataCell(
                                       Text(partners![i]!.parentId.toString())),
                                   DataCell(
-                                      Text(partners![i]!.partnerId.toString())),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          userId =  partners![i]!.partnerId.toString();
+                                        });
+                                        fetch();
+                                      },
+                                      child: Text(
+                                        partners![i]!.partnerId.toString(),
+                                      ),
+                                    ),
+                                  ),
                                   DataCell(Text(
                                       partners![i]!.partnerName.toString())),
                                   DataCell(Text(
