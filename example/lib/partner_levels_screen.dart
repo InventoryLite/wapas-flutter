@@ -39,11 +39,9 @@ class _PartnerLevelsScreenState extends State<PartnerLevelsScreen> {
       null,
       includeBalances,
     );
-    if (list.isNotEmpty) {
-      setState(() {
-        partners = list;
-      });
-    }
+    setState(() {
+      partners = list;
+    });
   }
 
   @override
@@ -150,12 +148,18 @@ class _PartnerLevelsScreenState extends State<PartnerLevelsScreen> {
                                     GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          userId =  partners![i]!.partnerId.toString();
+                                          userId = partners![i]!
+                                              .partnerId
+                                              .toString();
                                         });
                                         fetch();
                                       },
                                       child: Text(
                                         partners![i]!.partnerId.toString(),
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                          decoration: TextDecoration.underline,
+                                        ),
                                       ),
                                     ),
                                   ),

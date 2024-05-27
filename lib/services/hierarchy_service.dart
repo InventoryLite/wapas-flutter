@@ -64,21 +64,23 @@ Future<List<PartnerHierarchyModel>> fetchPartnerHierarchy(
     // If the server did return a 200 OK response,
     // then parse the JSON.
     var rb = response.body;
-
-    // store json data into list
-    var list = jsonDecode(rb);
-
     List<PartnerHierarchyModel> items = [];
+    if (rb.isNotEmpty) {
+      // store json data into list
+      var list = jsonDecode(rb);
 
-    // iterate over the list and map each object in list to Img by calling Img.fromJson
-    items = list == null
-        ? items
-        : list
-            .map<PartnerHierarchyModel>(
-                (i) => PartnerHierarchyModel.fromJson(i))
-            .toList();
+      // iterate over the list and map each object in list to Img by calling Img.fromJson
+      items = list == null
+          ? items
+          : list
+              .map<PartnerHierarchyModel>(
+                  (i) => PartnerHierarchyModel.fromJson(i))
+              .toList();
 
-    return items;
+      return items;
+    } else {
+      return items;
+    }
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
