@@ -10,6 +10,7 @@ import 'package:wapas/models/config_model.dart';
 import 'package:wapas/models/user_achievement_list_model.dart';
 import 'package:wapas/wapas.dart';
 import 'package:wapas_example/add_partner_screen.dart';
+import 'package:wapas_example/partner_levels_screen.dart';
 
 // TODO : Add your crdentials
 const applicationId = "";
@@ -200,6 +201,18 @@ class _MyAppState extends State<MyApp> {
                   navigatorKey.currentState!.push(
                     MaterialPageRoute(
                       builder: (context) => AddPartnerScreen(
+                        wapasPlugin: _wapasPlugin,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                title: const Text('Partner levels'),
+                onTap: () {
+                  navigatorKey.currentState!.push(
+                    MaterialPageRoute(
+                      builder: (context) => PartnerLevelsScreen(
                         wapasPlugin: _wapasPlugin,
                       ),
                     ),

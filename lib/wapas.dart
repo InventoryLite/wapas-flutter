@@ -3,6 +3,7 @@ import 'package:wapas/models/autocomplete_model.dart';
 import 'package:wapas/models/balance_history_list_model.dart';
 import 'package:wapas/models/balance_model.dart';
 import 'package:wapas/models/config_model.dart';
+import 'package:wapas/models/partner_hierarchy_model.dart';
 import 'package:wapas/models/transaction_model.dart';
 import 'package:wapas/models/transaction_profile_model.dart';
 import 'package:wapas/models/transaction_report_list_model.dart';
@@ -94,5 +95,32 @@ class Wapas {
   Future<bool> savePartner(Map<String, dynamic> payload,
       [Config? config]) async {
     return WapasPlatform.instance.savePartner(payload, config);
+  }
+
+  Future<List<PartnerHierarchyModel>> getPartnerHierarchy(
+      String userId,
+      String? hierarchyType,
+      String? uptoPartner,
+      int? forLevel,
+      int? limit,
+      int? skip,
+      String? orderByRank,
+      String? orderByCount,
+      String? relativeTo,
+      bool? includeBalances,
+      [Config? config]) async {
+    return WapasPlatform.instance.getPartnerHierarchy(
+      userId,
+      hierarchyType,
+      uptoPartner,
+      forLevel,
+      limit,
+      skip,
+      orderByRank,
+      orderByCount,
+      relativeTo,
+      includeBalances,
+      config,
+    );
   }
 }
