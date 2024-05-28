@@ -11,12 +11,9 @@ class UserAchievementModel {
   String? achievementIdentifier;
   String? progress;
   bool? optOut;
-  String? additionalData;
-  String? importHash;
+  Map<String, dynamic>? additionalData;
   String? createdAt;
   String? updatedAt;
-  String? deletedAt;
-  String? tenantId;
   String? createdById;
   String? updatedById;
   AchievementModel? achievement;
@@ -33,11 +30,8 @@ class UserAchievementModel {
       this.progress,
       this.optOut,
       this.additionalData,
-      this.importHash,
       this.createdAt,
       this.updatedAt,
-      this.deletedAt,
-      this.tenantId,
       this.createdById,
       this.updatedById,
       this.achievement});
@@ -53,12 +47,9 @@ class UserAchievementModel {
     achievementIdentifier = json['achievementIdentifier'];
     progress = json['progress'];
     optOut = json['optOut'];
-    additionalData = json['additionalData'];
-    importHash = json['importHash'];
+    additionalData = json['additionalData'] ?? {};
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    deletedAt = json['deletedAt'];
-    tenantId = json['tenantId'];
     createdById = json['createdById'];
     updatedById = json['updatedById'];
     achievement = json["achievement"] == null
@@ -79,11 +70,8 @@ class UserAchievementModel {
     data['progress'] = this.progress;
     data['optOut'] = this.optOut;
     data['additionalData'] = this.additionalData;
-    data['importHash'] = this.importHash;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
-    data['deletedAt'] = this.deletedAt;
-    data['tenantId'] = this.tenantId;
     data['createdById'] = this.createdById;
     data['updatedById'] = this.updatedById;
     if (this.achievement != null) {
