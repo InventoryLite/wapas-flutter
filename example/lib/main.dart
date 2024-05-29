@@ -9,8 +9,12 @@ import 'package:wapas/models/achievement_model.dart';
 import 'package:wapas/models/config_model.dart';
 import 'package:wapas/models/user_achievement_list_model.dart';
 import 'package:wapas/wapas.dart';
-import 'package:wapas_example/add_partner_screen.dart';
-import 'package:wapas_example/partner_levels_screen.dart';
+import 'package:wapas_example/screens/add_partner_screen.dart';
+import 'package:wapas_example/screens/reports/partner_balance_report_chart_screen.dart';
+import 'package:wapas_example/screens/partner_levels_screen.dart';
+import 'package:wapas_example/screens/reports/partner_group_report_chart_screen.dart';
+import 'package:wapas_example/screens/reports/partner_report_chart_screen.dart';
+import 'package:wapas_example/screens/reports/partner_transactions_table_screen.dart';
 
 // TODO : Add your crdentials
 const applicationId = "";
@@ -84,7 +88,7 @@ class _MyAppState extends State<MyApp> {
     try {
       await _wapasPlugin.init(config!); // initialize the library
       achievementsList = await _wapasPlugin.getUnacknowledgedAchievements(
-        "662f7997704a55d1820cd8ee",
+        "II-1234",
       ); // get all achievements
     } on PlatformException {
       // Log exception and report studio@gameolive.com
@@ -218,6 +222,53 @@ class _MyAppState extends State<MyApp> {
                     ),
                   );
                 },
+              ),
+              ExpansionTile(
+                title: Text("Partner Reports"),
+                children: <Widget>[
+                  ListTile(
+                    title: const Text('Balance Report Chart'),
+                    onTap: () {
+                      navigatorKey.currentState!.push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              PartnerBalanceReportChartScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('Report Chart'),
+                    onTap: () {
+                      navigatorKey.currentState!.push(
+                        MaterialPageRoute(
+                          builder: (context) => PartnerReportChartScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('Group Report Chart'),
+                    onTap: () {
+                      navigatorKey.currentState!.push(
+                        MaterialPageRoute(
+                          builder: (context) => PartnerGroupReportChartScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('Recent Transaction Table View'),
+                    onTap: () {
+                      navigatorKey.currentState!.push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              PartnerTransactionsTablesScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             ],
           ),

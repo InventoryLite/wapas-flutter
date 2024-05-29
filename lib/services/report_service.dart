@@ -17,7 +17,7 @@ Future<List<TransactionModel>> fetchBalanceReport(
     bool includeToday,
     Config config) async {
   String path =
-      '${constants.REPORTING_API_HOST}/tenant/${config.applicationId}/reports/getbalances?filter%5BPartnerId%5D=$userId&filter%5Bcurrency%5D=$currency&filter%5BDateRange%5D%5B%5D=$startDate&filter%5BDateRange%5D%5B%5D=$endDate&group=$group&includePrevious=$includePrevious&includeToday=$includeToday';
+      '${constants.REPORTING_API_HOST}/tenant/${config.applicationId}/reports/getbalances?filter%5BPartnerId%5D=$userId&filter%5Bcurrency%5D=$currency&filter%5BDateRange%5D=$startDate&filter%5BDateRange%5D=$endDate&group=$group&includePrevious=$includePrevious&includeToday=$includeToday';
 
   final response = await http.post(Uri.parse(path),
       body: jsonEncode(<String, String>{
@@ -65,9 +65,9 @@ Future<TransactionReportListModel> fetchTransactionsReport(
 ) async {
   String filterQuery = filter ?? "";
   String startingDate =
-      startDate != null ? "&filter[CreatedAtRange]=$startDate" : "&";
+      startDate != null ? "&filter%5BCreatedAtRange%5D=$startDate" : "&";
   String endingDate =
-      endDate != null ? "&filter[CreatedAtRange]=$endDate" : "&";
+      endDate != null ? "&filter%5BCreatedAtRange%5D=$endDate" : "&";
   String suspensed = suspense != null ? "&suspense=$suspense" : "&";
   String limitValue = limit != null ? "&Limit=${limit}" : "&";
 
@@ -98,6 +98,6 @@ Future<TransactionReportListModel> fetchTransactionsReport(
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
-    throw Exception('Failed to fetch balance');
+    throw Exception('Failed to fetch transactions');
   }
 }

@@ -26,7 +26,7 @@ class TransactionReportModel {
   TransactionTypeDetail? transactionTypeDetail;
   CurrencyDetail? currencyDetail;
   String? virtualValue;
-  int? amount;
+  double? amount;
   String? baseTransaction;
   String? partnerLevelTypeIdentifier;
   Metadata? metadata;

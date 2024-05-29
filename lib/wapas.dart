@@ -9,6 +9,7 @@ import 'package:wapas/models/transaction_profile_model.dart';
 import 'package:wapas/models/transaction_report_list_model.dart';
 import 'package:wapas/models/transactions_list_model.dart';
 import 'package:wapas/models/user_achievement_list_model.dart';
+import 'package:wapas/models/user_achievement_model.dart';
 
 import 'wapas_platform_interface.dart';
 
@@ -28,9 +29,21 @@ class Wapas {
         .getAvailableAchievements(limit, offset, config);
   }
 
+  Future<List<UserAchievementModel>> getUserAchievements(String userId,
+      [Config? config]) async {
+    return WapasPlatform.instance.getUserAchievements(userId, config);
+  }
+
   Future<UserAchievementListModel> getUnacknowledgedAchievements(String userId,
       [Config? config]) async {
     return WapasPlatform.instance.getUnacknowledgedAchievements(userId, config);
+  }
+
+  Future<UserAchievementListModel> acknowledgeAchievement(
+      String userId, String achievementId,
+      [Config? config]) async {
+    return WapasPlatform.instance
+        .acknowledgeAchievement(userId, achievementId, config);
   }
 
   //DROPDOWNS
@@ -97,6 +110,7 @@ class Wapas {
     return WapasPlatform.instance.savePartner(payload, config);
   }
 
+  //PartnerHierarchyTree
   Future<List<PartnerHierarchyModel>> getPartnerHierarchy(
       String userId,
       String? hierarchyType,

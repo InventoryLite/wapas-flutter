@@ -10,6 +10,7 @@ import 'package:wapas/models/transaction_profile_model.dart';
 import 'package:wapas/models/transaction_report_list_model.dart';
 import 'package:wapas/models/transactions_list_model.dart';
 import 'package:wapas/models/user_achievement_list_model.dart';
+import 'package:wapas/models/user_achievement_model.dart';
 import 'package:wapas/services/achievement_service.dart';
 import 'package:wapas/services/autocomplete_service.dart';
 import 'package:wapas/services/balance_service.dart';
@@ -57,12 +58,27 @@ class MethodChannelWapas extends WapasPlatform {
     return fetchAvailableAchievements(limit, offset, config);
   }
 
+  Future<List<UserAchievementModel>> getUserAchievements(String userId,
+      [Config? config]) async {
+    config ??= CONFIG!;
+    return fetchUserchievements(userId, config);
+  }
+
   @override
   Future<UserAchievementListModel> getUnacknowledgedAchievements(String userId,
       [Config? config]) async {
     config ??= CONFIG!;
 
     return fetchUnacknowledgedAchievements(userId, config);
+  }
+
+  @override
+  Future<UserAchievementListModel> acknowledgeAchievement(
+      String userId, String achievementId,
+      [Config? config]) async {
+    config ??= CONFIG!;
+
+    return acknowledgeUserAchievement(userId, achievementId, config);
   }
 
   //DROPDOWNS
@@ -112,7 +128,6 @@ class MethodChannelWapas extends WapasPlatform {
   }
 
   //Reports
-  //TODO check model
   @override
   Future<List<TransactionModel>> getBalanceReport(
       String userId,
@@ -145,6 +160,7 @@ class MethodChannelWapas extends WapasPlatform {
     return createPartner(payload, config);
   }
 
+  //PartnerHierarchyTree
   @override
   Future<List<PartnerHierarchyModel>> getPartnerHierarchy(
       String userId,

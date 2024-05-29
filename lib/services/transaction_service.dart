@@ -35,7 +35,7 @@ Future<TransactionProfileModel> fetchTransactionProfile(
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
-    throw Exception('Failed to fetch balance');
+    throw Exception('Failed to fetch transactiun profile');
   }
 }
 
@@ -68,6 +68,6 @@ Future<TransactionListModel> fetchTransactions(
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
-    throw Exception('Failed to fetch balance');
+    throw Exception('Failed to fetch transactions');
   }
 }

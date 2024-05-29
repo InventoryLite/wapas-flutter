@@ -10,6 +10,7 @@ import 'package:wapas/models/transaction_profile_model.dart';
 import 'package:wapas/models/transaction_report_list_model.dart';
 import 'package:wapas/models/transactions_list_model.dart';
 import 'package:wapas/models/user_achievement_list_model.dart';
+import 'package:wapas/models/user_achievement_model.dart';
 
 import 'wapas_method_channel.dart';
 
@@ -49,10 +50,22 @@ abstract class WapasPlatform extends PlatformInterface {
         'getAvailableAchievements() has not been implemented.');
   }
 
+  Future<List<UserAchievementModel>> getUserAchievements(String userId,
+      [Config? config]) async {
+    throw UnimplementedError('getUserAchievements() has not been implemented.');
+  }
+
   Future<UserAchievementListModel> getUnacknowledgedAchievements(String userId,
       [Config? config]) async {
     throw UnimplementedError(
         'getUnacknowledgedAchievements() has not been implemented.');
+  }
+
+  Future<UserAchievementListModel> acknowledgeAchievement(
+      String userId, String achievementId,
+      [Config? config]) async {
+    throw UnimplementedError(
+        'acknowledgeAchievement() has not been implemented.');
   }
 
   //DROPDOWNS
@@ -116,6 +129,7 @@ abstract class WapasPlatform extends PlatformInterface {
     throw UnimplementedError('savePartner() has not been implemented.');
   }
 
+  //PartnerHierarchyTree
   Future<List<PartnerHierarchyModel>> getPartnerHierarchy(
       String userId,
       String? hierarchyType,
