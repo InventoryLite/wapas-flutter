@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:wapas/models/transaction_model.dart';
-import 'package:wapas/wapas.dart';
 import 'package:wapas_example/globals.dart';
-import 'package:wapas_example/screens/reports/chart.dart';
+import 'package:wapas_example/widgets/mini_transaction_card.dart';
 
-class PartnerGroupReportChartScreen extends StatefulWidget {
-  const PartnerGroupReportChartScreen({super.key});
+class MiniTransactionCardScreen extends StatefulWidget {
+  const MiniTransactionCardScreen({super.key});
 
   @override
-  State<PartnerGroupReportChartScreen> createState() =>
-      _PartnerGroupReportChartScreenState();
+  State<MiniTransactionCardScreen> createState() =>
+      _MiniTransactionCardScreenState();
 }
 
-class _PartnerGroupReportChartScreenState
-    extends State<PartnerGroupReportChartScreen> {
-  final _wapasPlugin = Wapas();
-  String selectedAmountType = "Amounts";
+class _MiniTransactionCardScreenState extends State<MiniTransactionCardScreen> {
+  final GlobalKey<MiniTransactionCardState> _childKey =
+      GlobalKey<MiniTransactionCardState>();
+
+  String selectedAmountType = "Amount";
   String selectedType = "Amount";
-  String selectedVolume = "grouped";
-  List<TransactionModel> transactions = [];
+  String selectedVolume = "group";
+  TransactionModel? transaction;
 
   bool includePrevious = false, includeToday = true;
 
@@ -28,33 +27,7 @@ class _PartnerGroupReportChartScreenState
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
   TextEditingController groupController = TextEditingController();
-  List<ChartData> chartData = [];
-
-  void fetch() async {
-    transactions = await _wapasPlugin.getBalanceReport(
-      userIdController.text,
-      currencyController.text,
-      startDateController.text,
-      endDateController.text,
-      groupController.text,
-      includePrevious,
-      includeToday,
-    );
-
-    chartData = [
-      for (int i = 0; i < transactions.length; i++)
-        ChartData(
-          transactions[i]!.date.toString(),
-          double.parse(
-            transactions[i].groupedDebitAmounts!.isNotEmpty
-                ? transactions[i].groupedDebitAmounts!["AMOUNT"].toString()
-                : "0",
-          ),
-        ),
-    ];
-
-    setState(() {});
-  }
+  TextEditingController transactionTypeController = TextEditingController();
 
   @override
   void initState() {
@@ -63,8 +36,8 @@ class _PartnerGroupReportChartScreenState
     currencyController.text = "INR";
     startDateController.text = "2024-04-01";
     endDateController.text = "2024-04-30";
-    groupController.text = "daily";
-    fetch();
+    groupController.text = "monthly";
+    transactionTypeController.text = "AMOUNT";
   }
 
   Future<void> _selectDate(BuildContext context, bool isStartDate) async {
@@ -90,24 +63,36 @@ class _PartnerGroupReportChartScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Partner Group Report Chart'),
+        title: const Text('Mini transaction card'),
       ),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(16),
           child: Column(
             children: [
-              SfCartesianChart(
-                series: <CartesianSeries>[
-                  // Renders column chart
-                  ColumnSeries(
-                      dataSource: chartData,
-                      xValueMapper: (data, _) => data.x,
-                      yValueMapper: (data, _) => data.y)
-                ],
-                primaryXAxis: CategoryAxis(),
-                primaryYAxis: NumericAxis(),
-              ),
+              userIdController.text.isNotEmpty &&
+                      currencyController.text.isNotEmpty &&
+                      startDateController.text.isNotEmpty &&
+                      endDateController.text.isNotEmpty &&
+                      groupController.text.isNotEmpty &&
+                      transactionTypeController.text.isNotEmpty
+                  ? MiniTransactionCard(
+                      key: _childKey,
+                      userId: userIdController.text,
+                      currency: currencyController.text,
+                      startDate: startDateController.text,
+                      endDate: endDateController.text,
+                      group: groupController.text,
+                      includePrevious: includePrevious,
+                      amountType: selectedAmountType.toLowerCase(),
+                      transactionType: transactionTypeController.text,
+                      type: selectedType.toLowerCase(),
+                      volume: selectedVolume,
+                      includeToday: includeToday,
+                      showPrevious: true,
+                      isTransaction: false,
+                    )
+                  : Text('fill details below'),
               TextField(
                 controller: userIdController,
                 decoration: InputDecoration(labelText: 'User ID'),
@@ -139,11 +124,17 @@ class _PartnerGroupReportChartScreenState
                 decoration: InputDecoration(labelText: 'Group'),
               ),
               SizedBox(height: 10),
+              TextField(
+                controller: transactionTypeController,
+                decoration:
+                    InputDecoration(labelText: 'Transaction Type (Report key)'),
+              ),
+              SizedBox(height: 10),
               DropdownButtonFormField(
                 value: selectedAmountType,
                 icon: const Icon(Icons.keyboard_arrow_down),
                 decoration: InputDecoration(labelText: "Amount type"),
-                items: globals.amountTypes.values.map((String items) {
+                items: globals.simpleAmountTypes.values.map((String items) {
                   return DropdownMenuItem(
                     value: items,
                     child: Text(items.toString()),
@@ -175,7 +166,7 @@ class _PartnerGroupReportChartScreenState
                 value: selectedVolume,
                 icon: const Icon(Icons.keyboard_arrow_down),
                 decoration: InputDecoration(labelText: "Volume"),
-                items: globals.volumes.values.map((String items) {
+                items: globals.simpleVolumes.values.map((String items) {
                   return DropdownMenuItem(
                     value: items,
                     child: Text(items.toString()),
@@ -212,7 +203,9 @@ class _PartnerGroupReportChartScreenState
                 ],
               ),
               ElevatedButton(
-                onPressed: fetch,
+                onPressed: () {
+                  _childKey.currentState?.refresh();
+                },
                 child: Text('Submit'),
               ),
             ],

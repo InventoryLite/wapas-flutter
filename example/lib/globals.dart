@@ -1,9 +1,7 @@
 class globals {
-  static final Map<String, String> availableCharts = {
-    'balance': 'Partner Balance Report Chart',
-    'report': 'Partner Report Chart',
-    'groupReport': 'Partner Group Report Chart',
-  };
+  static final dateFormat = "yyyy-MM-dd";
+  static final String blankFieldError = "please fill all fields";
+
   static final Map<String, String> amountTypes = {
     'amount': "Amounts",
     'virtual': "VirtualValues",
@@ -16,5 +14,13 @@ class globals {
   static final Map<String, String> volumes = {
     'grouped': "grouped",
     'total': "total",
+  };
+  static final Map<String, String> simpleVolumes = {
+    'group': "group",
+    'total': "total",
+  };
+  static final Map<String, String> simpleAmountTypes = {
+    'amount': "Amount",
+    'virtual': "Virtual",
   };
 }

@@ -27,30 +27,50 @@ class _PartnerReportChartScreenState extends State<PartnerReportChartScreen> {
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
   TextEditingController groupController = TextEditingController();
+  TextEditingController transactionTypeController = TextEditingController();
   List<ChartData> chartData = [];
 
   void fetch() async {
-    transactions = await _wapasPlugin.getBalanceReport(
-      userIdController.text,
-      currencyController.text,
-      startDateController.text,
-      endDateController.text,
-      groupController.text,
-      includePrevious,
-      includeToday,
-    );
+    if (userIdController.text.isNotEmpty &&
+        currencyController.text.isNotEmpty &&
+        startDateController.text.isNotEmpty &&
+        groupController.text.isNotEmpty &&
+        transactionTypeController.text.isNotEmpty) {
+      transactions = await _wapasPlugin.getBalanceReport(
+        userIdController.text,
+        currencyController.text,
+        startDateController.text,
+        endDateController.text,
+        groupController.text,
+        includePrevious,
+        includeToday,
+      );
 
-    chartData = [
-      for (int i = 0; i < transactions.length; i++)
-        ChartData(
-          transactions[i]!.date.toString(),
-          double.parse(
-            transactions[i].totalDebitAmounts!["AMOUNT"].toString(),
-          ),
-        ),
-    ];
+      String key = (selectedVolume + selectedType + selectedAmountType)
+          .replaceFirst("AmountAmounts", "Amounts");
 
-    setState(() {});
+      for (int i = 0; i < transactions!.length; i++) {
+        List<String> transactionTypes =
+            transactions[i].toJson()[key]!.keys.toList();
+        if (transactionTypes.contains(transactionTypeController.text)) {
+          chartData.add(
+            ChartData(
+              transactions[i]!.date.toString(),
+              double.parse(
+                transactions[i]
+                    .toJson()[key]![transactionTypeController.text]
+                    .toString(),
+              ),
+            ),
+          );
+        }
+      }
+
+      setState(() {});
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(globals.blankFieldError)));
+    }
   }
 
   @override
@@ -60,7 +80,8 @@ class _PartnerReportChartScreenState extends State<PartnerReportChartScreen> {
     currencyController.text = "INR";
     startDateController.text = "2024-04-01";
     endDateController.text = "2024-04-30";
-    groupController.text = "monthly";
+    groupController.text = "daily";
+    transactionTypeController.text = "AMOUNT";
     fetch();
   }
 
@@ -134,6 +155,12 @@ class _PartnerReportChartScreenState extends State<PartnerReportChartScreen> {
               TextField(
                 controller: groupController,
                 decoration: InputDecoration(labelText: 'Group'),
+              ),
+              SizedBox(height: 10),
+              TextField(
+                controller: transactionTypeController,
+                decoration:
+                    InputDecoration(labelText: 'Transaction Type (Report key)'),
               ),
               SizedBox(height: 10),
               DropdownButtonFormField(

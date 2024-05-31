@@ -32,44 +32,53 @@ class _PartnerBalanceReportChartScreenState
   List<ChartData> chartData = [];
 
   void fetch() async {
-    transactions = await _wapasPlugin.getBalanceReport(
-      userIdController.text,
-      currencyController.text,
-      startDateController.text,
-      endDateController.text,
-      groupController.text,
-      includePrevious,
-      includeToday,
-    );
-
-    String key = (selectedVolume + selectedType + selectedAmountType)
-        .replaceFirst("AmountAmounts", "Amounts");
-    double totalValue = 0;
-    List<String> types =  transactionTypesController.text.split(",");
-    for (int i = 0; i < types.length; i++) {
-      totalValue += double.parse(
-        transactions[0].toJson()[key]![types[i]].toString(),
+    if (userIdController.text.isNotEmpty &&
+        currencyController.text.isNotEmpty &&
+        startDateController.text.isNotEmpty &&
+        endDateController.text.isNotEmpty &&
+        groupController.text.isNotEmpty &&
+        transactionTypesController.text.isNotEmpty) {
+      transactions = await _wapasPlugin.getBalanceReport(
+        userIdController.text,
+        currencyController.text,
+        startDateController.text,
+        endDateController.text,
+        groupController.text,
+        includePrevious,
+        includeToday,
       );
-    }
 
-    for (int i = 0; i < transactions[0].toJson()[key]!.length; i++) {
-      String transactionType = transactions[0].toJson()[key]!.keys.toList()[i];
-      if (transactionTypesController.text
-          .split(",")
-          .contains(transactionType)) {
-        double percentage =
-            (transactions[0].toJson()[key]!.values.toList()[i] / totalValue) *
-                100;
-        chartData.add(
-          ChartData(
-            transactionType,
-            double.parse(percentage.toStringAsFixed(2)),
-          ),
+      String key = (selectedVolume + selectedType + selectedAmountType)
+          .replaceFirst("AmountAmounts", "Amounts");
+      double totalValue = 0;
+      List<String> types = transactionTypesController.text.split(",");
+      for (int i = 0; i < types.length; i++) {
+        totalValue += double.parse(
+          transactions[0].toJson()[key]![types[i]].toString(),
         );
       }
-    }
 
-    setState(() {});
+      for (int i = 0; i < transactions[0].toJson()[key]!.length; i++) {
+        String transactionType =
+            transactions[0].toJson()[key]!.keys.toList()[i];
+        if (types.contains(transactionType)) {
+          double percentage =
+              (transactions[0].toJson()[key]!.values.toList()[i] / totalValue) *
+                  100;
+          chartData.add(
+            ChartData(
+              transactionType,
+              double.parse(percentage.toStringAsFixed(2)),
+            ),
+          );
+        }
+      }
+
+      setState(() {});
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(globals.blankFieldError)));
+    }
   }
 
   @override
