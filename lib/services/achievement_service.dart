@@ -123,7 +123,7 @@ Future<UserAchievementListModel> fetchUnacknowledgedAchievements(
   }
 }
 
-Future<UserAchievementListModel> acknowledgeUserAchievement(
+Future<List<UserAchievementModel>> acknowledgeUserAchievement(
     String userId, String achievementId, Config config) async {
   String path =
       '${constants.API_HOST}/tenant/${config.applicationId}/user-achievements/acknowledge/$userId/$achievementId';
@@ -145,18 +145,20 @@ Future<UserAchievementListModel> acknowledgeUserAchievement(
     var rb = response.body;
 
     // store json data into list
-    var achievementResponse = jsonDecode(rb) as Map<String, dynamic>;
+    var list = jsonDecode(rb);
+
+    List<UserAchievementModel> items = [];
 
     // iterate over the list and map each object in list to Img by calling Img.fromJson
-    UserAchievementListModel achievementList =
-        UserAchievementListModel.fromJson(
-      achievementResponse,
-    );
-
-    return achievementList;
+    items = list == null
+        ? items
+        : list
+            .map<UserAchievementModel>((i) => UserAchievementModel.fromJson(i))
+            .toList();
+    return items;
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
-    throw Exception('Failed to fetch available achievements');
+    throw Exception('Failed to fetch acknowledge achievements');
   }
 }

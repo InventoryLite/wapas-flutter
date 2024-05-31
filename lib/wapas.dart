@@ -39,7 +39,7 @@ class Wapas {
     return WapasPlatform.instance.getUnacknowledgedAchievements(userId, config);
   }
 
-  Future<UserAchievementListModel> acknowledgeAchievement(
+  Future<List<UserAchievementModel>> acknowledgeAchievement(
       String userId, String achievementId,
       [Config? config]) async {
     return WapasPlatform.instance

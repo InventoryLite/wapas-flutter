@@ -61,7 +61,7 @@ abstract class WapasPlatform extends PlatformInterface {
         'getUnacknowledgedAchievements() has not been implemented.');
   }
 
-  Future<UserAchievementListModel> acknowledgeAchievement(
+  Future<List<UserAchievementModel>> acknowledgeAchievement(
       String userId, String achievementId,
       [Config? config]) async {
     throw UnimplementedError(

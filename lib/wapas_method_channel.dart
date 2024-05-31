@@ -73,7 +73,7 @@ class MethodChannelWapas extends WapasPlatform {
   }
 
   @override
-  Future<UserAchievementListModel> acknowledgeAchievement(
+  Future<List<UserAchievementModel>> acknowledgeAchievement(
       String userId, String achievementId,
       [Config? config]) async {
     config ??= CONFIG!;
