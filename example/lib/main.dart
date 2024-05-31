@@ -17,24 +17,9 @@ import 'package:wapas_example/screens/reports/partner_report_chart_screen.dart';
 import 'package:wapas_example/screens/reports/partner_transactions_table_screen.dart';
 
 // TODO : Add your crdentials
-// const applicationId = "";
-// const clientId = "";
-// const clientSecret = "";
-// const version = "";
-
-// const applicationId = "80680b87-53a9-446e-96ab-9fb289628d8d";
-// const clientId = "FAB_BUILDER_BOT@80680b87-53a9-446e-96ab-9fb289628d8d.wab";
-// const clientSecret = "c20d600b-a3a4-41a9-a807-897d3ca99abc";
-// const version = "";
-
-// const applicationId = "0629b982-bc49-44bd-aaac-1e270d7acd67";
-// const clientId = "INTELLI_APP@0629b982-bc49-44bd-aaac-1e270d7acd67.wab";
-// const clientSecret = "1b32d7d4-efda-4ecf-9ee2-f671663e3432";
-// const version = "";
-
-const applicationId = "4b4c2dfb-f4df-4956-a055-89787e74cd4a";
-const clientId = "FATMoneyAdmin@4b4c2dfb-f4df-4956-a055-89787e74cd4a.wab";
-const clientSecret = "6f1121cf-2531-42c0-804c-385727d20e36";
+const applicationId = "";
+const clientId = "";
+const clientSecret = "";
 const version = "";
 
 void main() {
