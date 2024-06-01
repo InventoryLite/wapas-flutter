@@ -10,6 +10,7 @@ import 'package:wapas/models/config_model.dart';
 import 'package:wapas/models/user_achievement_list_model.dart';
 import 'package:wapas/wapas.dart';
 import 'package:wapas_example/screens/add_partner_screen.dart';
+import 'package:wapas_example/screens/balance/partner_balance_chart_screen.dart';
 import 'package:wapas_example/screens/reports/mini_transaction_card_screen.dart';
 import 'package:wapas_example/screens/reports/partner_balance_report_chart_screen.dart';
 import 'package:wapas_example/screens/partner_levels_screen.dart';
@@ -264,6 +265,21 @@ class _MyAppState extends State<MyApp> {
                       navigatorKey.currentState!.push(
                         MaterialPageRoute(
                           builder: (context) => MiniTransactionCardScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              ExpansionTile(
+                title: Text("Partner Balance Widgets"),
+                children: <Widget>[
+                  ListTile(
+                    title: const Text('Balance Chart'),
+                    onTap: () {
+                      navigatorKey.currentState!.push(
+                        MaterialPageRoute(
+                          builder: (context) => PartnerBalanceChartScreen(),
                         ),
                       );
                     },
