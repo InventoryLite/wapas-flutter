@@ -48,7 +48,7 @@ Future<List<BalanceModel>> fetchBalance(
 Future<BalanceHistoryListModel> fetchBalanceHistory(String userId,
     String currency, String startDate, String endDate, Config config) async {
   String path =
-      '${constants.API_HOST}/tenant/${config.applicationId}/get-partner-balances-report-by-date?filter%5BuserId%5D=$userId&filter%5Bcurrency%5D=$currency&filter%5BdateRange%5D%5B%5D=$startDate&filter%5BdateRange%5D%5B%5D=$endDate';
+      '${constants.API_HOST}/tenant/${config.applicationId}/reports/get-partner-balances-report-by-date?filter%5BuserId%5D=$userId&filter%5Bcurrency%5D=$currency&filter%5BdateRange%5D%5B%5D=$startDate&filter%5BdateRange%5D%5B%5D=$endDate';
 
   final response = await http.post(Uri.parse(path),
       body: jsonEncode(<String, String>{
