@@ -1,3 +1,7 @@
+## 0.0.6
+
+* Integrated with balance services.
+
 ## 0.0.5
 
 * Integrated with balance services.
