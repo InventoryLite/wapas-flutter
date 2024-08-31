@@ -5,6 +5,7 @@ import 'package:wapas/models/config_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:wapas/models/transaction_profile_model.dart';
 import 'package:wapas/models/transactions_list_model.dart';
+import 'package:wapas/models/validate_coupon_model.dart';
 
 Future<TransactionProfileModel> fetchTransactionProfile(
     String userId, String currency, Config config) async {
@@ -65,6 +66,43 @@ Future<TransactionListModel> fetchTransactions(
         TransactionListModel.fromJson(jsonResponse);
 
     return transactions;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to fetch transactions');
+  }
+}
+
+Future<ValidateCouponModel> checkCoupon(
+    String? userId, String amount, String? couponCode, Config config) async {
+  String path =
+      '${constants.API_HOST}/tenant/${config.applicationId}/validate-coupon';
+
+  final response = await http.post(Uri.parse(path),
+      body: jsonEncode(<String, dynamic>{
+        // "application_id": config.applicationId,
+        // "client_secret": config.clientSecret,
+        // "client_id": config.clientId,
+        // "version": config.version,
+        "data": <String, dynamic>{
+          "couponCode": couponCode,
+          "amount": amount,
+          "partnerId": userId ?? "",
+        },
+      }),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      });
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    var rb = response.body;
+    var jsonResponse = jsonDecode(rb);
+
+    ValidateCouponModel res = ValidateCouponModel.fromJson(jsonResponse);
+
+    return res;
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.

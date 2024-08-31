@@ -20,6 +20,7 @@ import 'package:wapas/services/report_service.dart';
 import 'package:wapas/services/transaction_service.dart';
 import 'models/config_model.dart';
 
+import 'models/validate_coupon_model.dart';
 import 'wapas_platform_interface.dart';
 
 // ignore: non_constant_identifier_names
@@ -150,6 +151,14 @@ class MethodChannelWapas extends WapasPlatform {
     config ??= CONFIG!;
     return fetchTransactionsReport(
         filter, startDate, endDate, suspense, limit, config);
+  }
+
+  @override
+  Future<ValidateCouponModel> validateCoupon(
+      String? userId, String amount, String couponCode,
+      [Config? config]) async {
+    config ??= CONFIG!;
+    return checkCoupon(userId, amount, couponCode, config);
   }
 
   //partner

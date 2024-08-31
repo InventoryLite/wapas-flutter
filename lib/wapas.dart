@@ -10,6 +10,7 @@ import 'package:wapas/models/transaction_report_list_model.dart';
 import 'package:wapas/models/transactions_list_model.dart';
 import 'package:wapas/models/user_achievement_list_model.dart';
 import 'package:wapas/models/user_achievement_model.dart';
+import 'package:wapas/models/validate_coupon_model.dart';
 
 import 'wapas_platform_interface.dart';
 
@@ -102,6 +103,13 @@ class Wapas {
       [String? filter, Config? config]) async {
     return WapasPlatform.instance.getTransactionsReport(
         startDate, endDate, suspense, limit, filter, config);
+  }
+
+  Future<ValidateCouponModel> validateCoupon(
+      String? userId, String amount, String couponCode,
+      [Config? config]) async {
+    return WapasPlatform.instance
+        .validateCoupon(userId, amount, couponCode, config);
   }
 
   //partner

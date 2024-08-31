@@ -12,6 +12,7 @@ import 'package:wapas/models/transactions_list_model.dart';
 import 'package:wapas/models/user_achievement_list_model.dart';
 import 'package:wapas/models/user_achievement_model.dart';
 
+import 'models/validate_coupon_model.dart';
 import 'wapas_method_channel.dart';
 
 abstract class WapasPlatform extends PlatformInterface {
@@ -121,6 +122,13 @@ abstract class WapasPlatform extends PlatformInterface {
       [String? filter, Config? config]) async {
     throw UnimplementedError(
         'getTransactionsReport() has not been implemented.');
+  }
+
+  Future<ValidateCouponModel> validateCoupon(
+      String? userId, String amount, String couponCode,
+      [Config? config]) async {
+    throw UnimplementedError(
+        'validateCoupon() has not been implemented.');
   }
 
   //partner
